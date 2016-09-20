@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  <title>Document</title>
+  
+  <!-- Wimpy Engine -->
+  <script src="wimpy/wimpy.js"></script>
+  
+  
+</head>
+<body>
+        <div id="player1" data-wimpyplayer data-media="wimpy/song1.mp3|wimpy/song2.mp3|wimpy/song3.mp3"></div>
+
+  <script>
+  wimpy.onReady(function(){
+
+      var myPlayer = wimpy.getPlayer("player1");
+
+      myPlayer.play();
+
+      // Notice the "index" argument is not included. 
+      // Therefore the currently playing track's info will 
+      // be returned to the "info" variable. 
+      var info = myPlayer.getTrackDataset(); 
+      var output = "";
+        
+        console.log(info[file]);
+      
+     var title;
+     var file;
+    
+      for(var prop in info){
+            if(prop == 'title') {
+              title = info[prop];
+            }
+        
+            if(prop == 'file') {
+              file = info[file];
+            }
+//              var str = prop + " " + info[prop]
+//              console.log(str);
+//              output += str + "\n";
+      }
+    
+    console.log('title : ' + title);
+    console.log('file : ' + file);
+
+//      alert(output);
+
+      // Here the "index" argument (2) is included, so we're 
+      // asking wimpy for a specific playlist item. 
+//      var info = myPlayer.getTrackDataset(2); 
+//      var output = "";
+//      fdor(var prop in info){
+//              var str = prop + " " + info[prop]
+//              console.log(str);
+//              output += str + "\n";
+//      }
+//
+//      alert(output);
+  });
+
+</script>
+  
+  
+</body>
+</html>

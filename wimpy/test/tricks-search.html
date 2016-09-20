@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta charset="UTF-8">
+<title>DEV simple</title>
+
+<script src="_test-stuff.js"></script>
+
+<!-- Wimpy Engine -->
+<script src="../wimpy.js"></script><script src="wimpy.js"></script>
+
+
+</head>
+<body style="background-color:#efefef">
+
+
+<div id="myPlayer" data-wimpyPlayer data-media="../wimpy.php"></div>
+
+<p>&nbsp;</p>
+<center>
+	<input id="searchTextBox" type="text" />
+	<input id="searchButton" type="button" value="Search" />
+</center>
+
+<script>
+
+
+var player;
+var playlist;
+var searchTextBoxElement;
+var searchButtonElement;
+
+function setupSearch(e) {
+	
+	searchTextBoxElement = document.getElementById("searchTextBox");
+	searchTextBoxElement.addEventListener("keyup", wimpySearchEnterCheck);
+	
+	searchButtonElement = document.getElementById("searchButton");
+	searchButtonElement.addEventListener("click", wimpySearch);
+	
+}
+
+
+
+function wimpySearchEnterCheck(e){
+	// Look to see if the "enter" key is hit.
+	if(e.keyCode == 13){
+		wimpySearch();
+	}
+}
+
+function wimpySearch(){
+	
+	// Only need to do this one time. It wouldn't hurt to do every time.
+	if( ! player ){
+		player = wimpy.getPlayer("myPlayer");
+		playlist = player.getPlaylist();
+	}
+
+	// Get the value of the entered text
+	var cleanText = searchTextBoxElement.value;
+	
+	if(cleanText){
+		
+		cleanText = cleanText.toLowerCase();
+
+		var gotoIndex = -1;
+		for(var i=0; i<playlist.length; i++){
+			item = playlist[i];
+
+			// Since we're just looking for text that matches we can jam all the 
+			// text for the fields we want to search against into one long string
+			// then just look for a match on the long string as opposed to searching
+			// each individual field one-at-a-time.
+			var gang = (item.title + item.artist + item.file).toLowerCase();
+
+			if( gang.indexOf(cleanText) > -1 ){
+				gotoIndex = i;
+				
+				// Stop the "for" loop and stop searching, if we don't break the loop
+				// then we'll continue to look through each item in the playlist
+				
+				break;
+			}
+			
+		}
+
+		if(gotoIndex > -1){
+		  	// gotoTrack considers the playlist to be "one based" not "zero based"
+			// So we add one to the index we found from our zero-based array index.
+			player.gotoTrack(gotoIndex + 1);
+		}
+	}
+	
+}
+
+wimpy.onReady(setupSearch);
+
+</script>
+
+
+
+</div> <!-- close pageWrapper -->
+</body>
+</html>
